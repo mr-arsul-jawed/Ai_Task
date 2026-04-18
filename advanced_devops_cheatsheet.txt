@@ -1,0 +1,107 @@
+ADVANCED DEVOPS CHEAT SHEET (DOCKER + DEBUG + DEPLOYMENT)
+
+===================== DOCKER CORE COMMANDS =====================
+
+docker ps -> Running containers
+
+docker ps -a -> All containers
+
+docker images -> List images
+
+docker stop -> Stop container
+
+docker start -> Start container
+
+docker restart -> Restart container
+
+docker rm -> Remove container
+
+docker rmi -> Remove image
+
+===================== DOCKER LOGS & DEBUG =====================
+
+docker logs -> Show logs
+
+docker logs -f -> Live logs
+
+docker inspect -> Deep container info
+
+docker stats -> CPU / memory usage
+
+===================== ENTER CONTAINER =====================
+
+docker exec -it bash -> Enter container (like server)
+
+===================== FILE COMMANDS =====================
+
+ls / ls -l / ls -a -> View files
+
+pwd -> Current path
+
+cd
+-> Navigate
+
+cat -> View file
+
+less -> Scroll
+
+nano -> Edit
+
+===================== SYSTEM / DEBUG INSIDE =====================
+
+printenv -> Env variables
+
+ps aux -> Running processes
+
+top -> Live processes
+
+===================== NETWORK DEBUG =====================
+
+curl localhost: -> Check server
+
+ping -> Check connection
+
+netstat -tuln -> Open ports
+
+===================== DOCKER COMPOSE =====================
+
+docker-compose up -> Start services
+
+docker-compose up –build -> Rebuild + start
+
+docker-compose down -> Stop all
+
+docker-compose logs -> All logs
+
+docker-compose logs -f -> Live logs
+
+===================== DATABASE DEBUG =====================
+
+Check Mongo running: docker ps
+
+Enter mongo: docker exec -it mongosh (eq: docker exec -it < container_id > mongosh) 
+
+Enter mongo BASH: docker exec -it <mongo_container_id> bash 
+
+Check DB: show dbs use show collections 
+
+===================== COMMON PROBLEMS =====================
+
+1.  App not starting -> Check logs
+
+2.  Port not working -> Check correct port
+
+3.  DB not connected -> Check connection string
+
+4.  Data not saving -> Check schema + backend logic
+
+5.  Container crash -> docker logs
+
+
+===================== REAL DEVOPS RULES =====================
+
+1.  Always check logs first
+2.  Never assume — verify
+3.  Break → Debug → Fix → Learn
+4.  Understand ports + networking
+5.  Keep notes of bugs you solved
