@@ -1,0 +1,11 @@
+div{
+  /* box-sizing: border-box; */
+  /* padding: auto; */
+  padding-left: 20%;
+  font-size: large;
+  margin-top: 10%;
+  /* margin-left: 25%; */
+  /* border-radius: 10px; */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}

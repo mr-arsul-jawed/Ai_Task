@@ -1,0 +1,133 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #ffffff;
+  --border: #f0f0f2;
+  --accent: #aa3bff;
+  --accent-soft: rgba(170, 59, 255, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+  
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #a1a1aa;
+    --text-h: #ffffff;
+    --bg: #09090b;
+    --border: #27272a;
+    --accent: #c084fc;
+    --accent-soft: rgba(192, 132, 252, 0.1);
+    --card-bg: rgba(24, 24, 27, 0.8);
+    --shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+
+
+
+
+/* --- THE UNIQUE H1 --- */
+h1 {
+  font-family: var(--sans);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Unique double-border accent */
+h1::before {
+  content: "My Applications";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: -1;
+  color: var(--accent);
+  opacity: 0.2;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: var(--accent);
+  opacity: 0.1;
+  transform: skewX(-15deg);
+  z-index: -1;
+}
+
+.subtitle {
+  color: var(--text);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+/* --- THE CARDS --- */
+.button-group {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.app-card {
+  flex: 1;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  padding: 40px 30px;
+  border-radius: 24px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: var(--shadow);
+}
+
+/* Subtle glow effect on hover */
+.app-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 30px 60px -12px rgba(170, 59, 255, 0.15);
+}
+
+.app-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: var(--text-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Arrow icon that appears on hover */
+.app-card h3::after {
+  content: "→";
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: 0.3s;
+  color: var(--accent);
+}
+
+.app-card:hover h3::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.app-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
