@@ -1,6 +1,38 @@
-version: "3"
+# version: "3"
+
+# services:
+#   backend:
+#     build: ./backend
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - MONGO_URI=mongodb://mongo:27017/ai_task
+#       - JWT_SECRET=ai_task_secret
+#     depends_on:
+#       - mongo
+
+#   frontend:
+#     build: ./frontend
+#     ports:
+#       - "5173:5173"
+#     depends_on:
+#       - backend
+
+#   mongo:
+#     image: mongo
+#     ports:
+#       - "27017:27017"
+
+version: "3.8"
 
 services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
   backend:
     build: ./backend
     ports:
@@ -15,10 +47,10 @@ services:
     build: ./frontend
     ports:
       - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
     depends_on:
       - backend
 
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
+volumes:
+  mongo_data:

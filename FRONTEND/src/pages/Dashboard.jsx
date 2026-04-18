@@ -5,19 +5,13 @@ import "../css/dashboard.css"; // Ensure path is correct
 
 function Dashboard() {
   const [user, setUser] = useState("");
-  const [activeApp, setActiveApp] = useState(null);
+  const [activeApp, setActiveApp] = useState(localStorage.getItem("activeApp") || null);
 
   const token = localStorage.getItem("token");
-  console.log("Dashboard token:", token);
+  // console.log("Dashboard token:", token);
 
   const API = import.meta.env.VITE_API_URL;
 
-  // useEffect(() => {
-  //   // get user name
-  //   axios.get(`${API}/api/tasks/alltasks`, {
-  //     headers: { Authorization: `Bearer ${token}` }
-  //   }).then(res => setUser(res.data.user));
-  // }, []);
 
   useEffect(() => {
      if (!token) return;
@@ -28,6 +22,12 @@ function Dashboard() {
       .catch(err => console.log(err));
 
     }, [API, token]);
+
+
+    const openApp = (app) => {
+      setActiveApp(app);
+      localStorage.setItem("activeApp", app);
+    };
 
 
   const logout = () => {
@@ -49,7 +49,11 @@ function Dashboard() {
       {/* APP SELECTOR */}
       {!activeApp && (
         <div className="app-grid">
-          <button className="app-card" onClick={() => setActiveApp("ai-task")}>
+          {/* <button className="app-card" onClick={() => setActiveApp("ai-task")}>
+            AI Task Manager
+          </button> */}
+
+          <button className="app-card" onClick={() => openApp("ai-task")}>
             AI Task Manager
           </button>
 
@@ -62,7 +66,18 @@ function Dashboard() {
       {/* ACTIVE APP */}
       {activeApp === "ai-task" && (
         <div className="app-content-wrapper">
-          <button className="back-btn" onClick={() => setActiveApp(null)}>
+
+          {/* <button className="back-btn" onClick={() => setActiveApp(null)}>
+            ⬅ Back to Dashboard
+          </button> */}
+
+          <button
+            className="back-btn"
+            onClick={() => {
+              setActiveApp(null);
+              localStorage.removeItem("activeApp");
+            }}
+          >
             ⬅ Back to Dashboard
           </button>
 
