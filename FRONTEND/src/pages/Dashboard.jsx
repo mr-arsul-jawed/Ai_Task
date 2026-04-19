@@ -5,7 +5,7 @@ import "../css/dashboard.css"; // Ensure path is correct
 
 function Dashboard() {
   const [user, setUser] = useState("");
-  const [activeApp, setActiveApp] = useState(localStorage.getItem("activeApp") || null);
+  const [activeApp, setActiveApp] = useState(null);
 
   const token = localStorage.getItem("token");
   // console.log("Dashboard token:", token);
