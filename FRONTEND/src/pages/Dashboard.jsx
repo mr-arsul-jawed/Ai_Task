@@ -49,13 +49,13 @@ function Dashboard() {
       {/* APP SELECTOR */}
       {!activeApp && (
         <div className="app-grid">
-          {/* <button className="app-card" onClick={() => setActiveApp("ai-task")}>
-            AI Task Manager
-          </button> */}
-
-          <button className="app-card" onClick={() => openApp("ai-task")}>
+          <button className="app-card" onClick={() => setActiveApp("ai-task")}>
             AI Task Manager
           </button>
+
+          {/* <button className="app-card" onClick={() => openApp("ai-task")}>
+            AI Task Manager
+          </button> */}
 
           <button className="app-card" disabled>
             Chat App (Coming Soon)
