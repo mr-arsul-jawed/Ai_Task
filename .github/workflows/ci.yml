@@ -20,13 +20,13 @@ jobs:
       # 🔹 Backend Install
       - name: Install Backend Dependencies
         run: |
-          cd backend
+          cd Ai_Task/backend
           npm install
 
       # 🔹 Backend Run Check
       - name: Test Backend Server
         run: |
-          cd backend
+          cd Ai_Task/backend
           node server.js &
           SERVER_PID=$!
           sleep 5
@@ -36,11 +36,11 @@ jobs:
       # 🔹 Frontend Install
       - name: Install Frontend Dependencies
         run: |
-          cd frontend
+          cd Ai_Task/frontend
           npm install
 
       # 🔹 Frontend Build Test
       - name: Build Frontend
         run: |
-          cd frontend
+          cd Ai_Task/frontend
           npm run build
