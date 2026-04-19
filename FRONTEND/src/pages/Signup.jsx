@@ -29,6 +29,8 @@ function Signup() {
       // alert("Signup Failed");
       if (err.response && err.response.data && err.response.data.message) {
         setErrorMsg(err.response.data.message);
+        console.log("Signup Failed beacause not gives proper email");
+        
       } else {
         setErrorMsg("Signup Failed. Please try again.Error: " + err.message);
       }
