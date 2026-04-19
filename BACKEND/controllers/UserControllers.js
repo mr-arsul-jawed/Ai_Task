@@ -1,6 +1,7 @@
 import User from "../model/UserModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 
 
 
@@ -8,6 +9,33 @@ import jwt from "jsonwebtoken";
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+
+
+        // 🔹 Basic validation
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                message: "All fields are required"
+            });
+        }
+
+        // 🔹 Clean input
+        email = email.trim().toLowerCase();
+        name = name.trim();
+
+        // 🔹 Email validation
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({
+                message: "Invalid email format"
+            });
+            }
+
+        // 🔹 Password validation
+        if (password.length < 6) {
+            return res.status(400).json({
+                message: "Password must be at least 6 characters"
+            });
+            }
+
 
         // Check user exists
         const existingUser = await User.findOne({ email });
@@ -28,6 +56,9 @@ export const signup = async (req, res) => {
             password: hashedPassword
         });
 
+
+       
+
         res.cookie("token", jwt.sign(
             { id: user._id },
             process.env.JWT_SECRET, 
@@ -40,7 +71,12 @@ export const signup = async (req, res) => {
 
         res.status(201)
         .json({ 
-            message: "User registered", user
+            message: "User registered",
+            user:{
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
          });
 
     } catch (error) {
