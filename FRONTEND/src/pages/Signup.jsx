@@ -30,10 +30,8 @@ function Signup() {
 
     if (err.response?.data?.message) {
       message = err.response.data.message;
-      alert(err.response.data.message);
     } else if (!err.response) {
       message = "Server not responding.";
-      alert(message);
     }
 
     setErrorMsg(message);

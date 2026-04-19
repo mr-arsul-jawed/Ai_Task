@@ -25,10 +25,8 @@ function Login() {
       let message = "An error occurred. Please try again.";
       if (err.response?.data?.message) {
         message = err.response.data.message;
-        alert(err.response.data.message);
       } else if (!err.response) {
         message = "Server not responding.";
-        alert(message);
       }
       setErrorMsg(message);
       console.error("Login error:", err);
@@ -58,6 +56,8 @@ function Login() {
         <button className="btn-login-submit" onClick={handleLogin}>
           Login
         </button>
+
+        {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
 
         <p>
           Don't have an account? <a href="/signup">Sign up</a>
