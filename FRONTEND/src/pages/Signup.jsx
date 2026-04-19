@@ -66,6 +66,8 @@ function Signup() {
           Sign Up
         </button>
 
+        {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
+
         <p className="auth-footer">
           Already have an account? <Link to="/login">Login</Link>
         </p>
