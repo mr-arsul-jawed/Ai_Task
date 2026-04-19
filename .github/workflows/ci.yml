@@ -15,30 +15,32 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       # 🔹 Backend Install
       - name: Install Backend Dependencies
         run: |
-          cd Ai_Task/backend
+          cd backend
           npm install
 
       # 🔹 Backend Run Check
       - name: Test Backend Server
         run: |
-          cd Ai_Task/backend
+          cd backend
           node server.js &
+          SERVER_PID=$!
           sleep 5
           curl http://localhost:3000 || exit 1
+          kill $SERVER_PID
 
       # 🔹 Frontend Install
       - name: Install Frontend Dependencies
         run: |
-          cd Ai_Task/frontend
+          cd frontend
           npm install
 
       # 🔹 Frontend Build Test
       - name: Build Frontend
         run: |
-          cd Ai_Task/frontend
+          cd frontend
           npm run build
