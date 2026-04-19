@@ -8,6 +8,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
   const navigation = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
@@ -15,28 +16,29 @@ function Signup() {
   const handleSignup = async () => {
     try {
       setErrorMsg("");
-
       await axios.post(`${API}/api/users/signup`, {
         name,
         email,
         password,
-      }, { withCredentials: true });
+      },{withCredentials: true});
 
-      // alert("Signup Successful");
+      alert("Signup Successful");
       console.log("Signup Successful");
       navigation("/login");
     } catch (err) {
-      // alert("Signup Failed");
-      if (err.response && err.response.data && err.response.data.message) {
-        setErrorMsg(err.response.data.message || "Signup Failed. Please try again." );
-        console.log("Signup Failed beacause not gives proper email");
-        
-      } else if (err.request) {
-        setErrorMsg("Server not responding. Try again later.");
-      } else {
-        setErrorMsg("An error occurred. Please try again." + err.message);
-      }
+    let message = "An error occurred. Please try again.";
+
+    if (err.response?.data?.message) {
+      alert(err.response.data.message);
+      message = err.response.data.message;
+    } else if (!err.response) {
+      message = "Server not responding.";
+      alert(message);
     }
+
+    setErrorMsg(message);
+    console.error("Signup Error:", err);
+  }
   };
 
   return (

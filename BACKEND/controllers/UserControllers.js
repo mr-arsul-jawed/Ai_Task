@@ -18,10 +18,6 @@ export const signup = async (req, res) => {
             });
         }
 
-        // 🔹 Clean input
-        email = email.trim().toLowerCase();
-        name = name.trim();
-
         // 🔹 Email validation
         if (!validator.isEmail(email)) {
             return res.status(400).json({
