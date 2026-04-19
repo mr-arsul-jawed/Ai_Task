@@ -7,22 +7,31 @@ function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigation = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
 
   const handleSignup = async () => {
     try {
+      setErrorMsg("");
+
       await axios.post(`${API}/api/users/signup`, {
         name,
         email,
         password,
-      });
+      }, { withCredentials: true });
 
-      alert("Signup Successful");
+      // alert("Signup Successful");
+      console.log("Signup Successful");
       navigation("/login");
     } catch (err) {
-      alert("Signup Failed");
+      // alert("Signup Failed");
+      if (err.response && err.response.data && err.response.data.message) {
+        setErrorMsg(err.response.data.message);
+      } else {
+        setErrorMsg("Signup Failed. Please try again.Error: " + err.message);
+      }
     }
   };
 
