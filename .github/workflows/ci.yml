@@ -19,11 +19,11 @@ jobs:
 
       # 🔹 Backend - Using ALL CAPS to match your folder
       - name: Install Backend Dependencies
-        working-directory: ./Ai_Task/BACKEND
+        working-directory: Ai_Task/BACKEND
         run: npm install
 
       - name: Test Backend Server
-        working-directory: ./Ai_Task/BACKEND
+        working-directory: Ai_Task/BACKEND
         run: |
           node server.js &
           SERVER_PID=$!
@@ -33,9 +33,9 @@ jobs:
 
       # 🔹 Frontend - Using ALL CAPS to match your folder
       - name: Install Frontend Dependencies
-        working-directory: ./Ai_Task/FRONTEND
+        working-directory: Ai_Task/FRONTEND
         run: npm install
 
       - name: Build Frontend
-        working-directory: ./Ai_Task/FRONTEND
+        working-directory: Ai_Task/FRONTEND
         run: npm run build
