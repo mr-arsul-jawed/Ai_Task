@@ -15,10 +15,21 @@ const app = express();
 // app.use(cors({
 //   origin: "*"
 // }));
+// app.use(cors({
+//   origin: "http://localhost:5173", // Replace '*' with your actual frontend URL
+//   credentials: true                // This allows the browser to send/receive cookies
+// }));
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.WEB_CLIENT_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: "http://localhost:5173", // Replace '*' with your actual frontend URL
-  credentials: true                // This allows the browser to send/receive cookies
+  origin: allowedOrigins,
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
