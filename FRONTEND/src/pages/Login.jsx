@@ -6,22 +6,33 @@ import "../css/login.css"; // Make sure the path is correct
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigation = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
 
   const handleLogin = async () => {
+    setErrorMsg("");
     try {
       const res = await axios.post(`${API}/api/users/login`, {
         email,
         password,
-      });
+      },{withCredentials: true});
 
       localStorage.setItem("token", res.data.token);
-      // alert("Login Successful");
+      alert("Login Successful");
       navigation("/dashboard");
     } catch (err) {
       // alert("Login Failed");
+      let message = "An error occurred. Please try again.";
+      if (err.response?.data?.message) {
+        message = err.response.data.message;
+        alert(message);
+      } else if (!err.response) {
+        message = "Server not responding.";
+        alert(message);
+      }
+      setErrorMsg(message);
       console.error("Login error:", err);
     }
   };

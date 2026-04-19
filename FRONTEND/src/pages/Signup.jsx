@@ -29,8 +29,8 @@ function Signup() {
     let message = "An error occurred. Please try again.";
 
     if (err.response?.data?.message) {
-      alert(err.response.data.message);
       message = err.response.data.message;
+      alert(err.response.data.message);
     } else if (!err.response) {
       message = "Server not responding.";
       alert(message);

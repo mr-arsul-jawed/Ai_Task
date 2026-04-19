@@ -89,6 +89,20 @@ export const login =  async (req, res) => {
     try {
         const { email, password } = req.body;
 
+         // 🔹 Basic validation
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and password are required"
+            });
+        }
+
+        // 🔹 Email format validation
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({
+                message: "Invalid email format"
+            });
+        }
+
         // Check user
         const user = await User.findOne({ email });
         if (!user) {
@@ -119,9 +133,15 @@ export const login =  async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict"
         });
-
+        
+        alert("Login successful");
         res.json({ 
-            message: "Login successful", token
+            message: "Login successful",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
          });
 
     } catch (error) {
@@ -133,14 +153,25 @@ export const login =  async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-        
+        try {
+        // 🔹 Clear cookie
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict"
         });
 
-    res.json({ message: "Logout successful" });
+        alert("Logout successful");
+        // 🔹 Response
+        res.status(200).json({
+            message: "Logout successful"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        });
+    }
 };
 
 
