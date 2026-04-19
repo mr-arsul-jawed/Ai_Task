@@ -22,7 +22,7 @@ function Signup() {
         password,
       },{withCredentials: true});
 
-      alert("Signup Successful");
+      // alert("Signup Successful");
       console.log("Signup Successful");
       navigation("/login");
     } catch (err) {
