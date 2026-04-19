@@ -10,37 +10,36 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated to v4 for better performance
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # Updated to v4
         with:
           node-version: 22
+          # Optional: cache: 'npm' - this speeds up future runs
+          # cache-dependency-path: './Ai_Task/backend/package-lock.json'
 
-      # 🔹 Backend Install
+      # --- BACKEND ---
       - name: Install Backend Dependencies
-        run: |
-          cd Ai_Task/backend
-          npm install
+        working-directory: ./Ai_Task/backend
+        run: npm install
 
-      # 🔹 Backend Run Check
       - name: Test Backend Server
+        working-directory: ./Ai_Task/backend
         run: |
-          cd Ai_Task/backend
           node server.js &
           SERVER_PID=$!
+          # Give the server a moment to start
           sleep 5
-          curl http://localhost:3000 || exit 1
+          # Simple health check
+          curl --retry 3 --retry-connrefused http://localhost:3000 || exit 1
           kill $SERVER_PID
 
-      # 🔹 Frontend Install
+      # --- FRONTEND ---
       - name: Install Frontend Dependencies
-        run: |
-          cd Ai_Task/frontend
-          npm install
+        working-directory: ./Ai_Task/frontend
+        run: npm install
 
-      # 🔹 Frontend Build Test
       - name: Build Frontend
-        run: |
-          cd Ai_Task/frontend
-          npm run build
+        working-directory: ./Ai_Task/frontend
+        run: npm run build
