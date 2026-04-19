@@ -28,11 +28,13 @@ function Signup() {
     } catch (err) {
       // alert("Signup Failed");
       if (err.response && err.response.data && err.response.data.message) {
-        setErrorMsg(err.response.data.message);
+        setErrorMsg(err.response.data.message || "Signup Failed. Please try again." );
         console.log("Signup Failed beacause not gives proper email");
         
+      } else if (err.request) {
+        setErrorMsg("Server not responding. Try again later.");
       } else {
-        setErrorMsg("Signup Failed. Please try again.Error: " + err.message);
+        setErrorMsg("An error occurred. Please try again." + err.message);
       }
     }
   };
