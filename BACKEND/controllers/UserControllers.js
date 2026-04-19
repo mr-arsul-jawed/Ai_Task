@@ -133,8 +133,6 @@ export const login =  async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict"
         });
-        
-        alert("Login successful");
         res.json({ 
             message: "Login successful",
             user: {
@@ -161,7 +159,6 @@ export const logout = async (req, res) => {
             sameSite: "strict"
         });
 
-        alert("Logout successful");
         // 🔹 Response
         res.status(200).json({
             message: "Logout successful"

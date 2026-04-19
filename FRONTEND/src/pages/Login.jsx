@@ -20,14 +20,12 @@ function Login() {
       },{withCredentials: true});
 
       localStorage.setItem("token", res.data.token);
-      alert("Login Successful");
       navigation("/dashboard");
     } catch (err) {
-      // alert("Login Failed");
       let message = "An error occurred. Please try again.";
       if (err.response?.data?.message) {
         message = err.response.data.message;
-        alert(message);
+        alert(err.response.data.message);
       } else if (!err.response) {
         message = "Server not responding.";
         alert(message);
