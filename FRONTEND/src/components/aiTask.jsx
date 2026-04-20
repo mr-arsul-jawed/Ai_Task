@@ -9,93 +9,46 @@ function AiTask() {
   const [description, setDescription] = useState("");
   
 
-  const token = localStorage.getItem("token");
   const API = import.meta.env.VITE_API_URL;
   const BASE = `${API}/api/tasks`;
-
-    const GET_TASKS = `${BASE}/alltasks`;
-    const CREATE_TASK = `${BASE}/createtask`;
-    const UPDATE_TASK = `${BASE}/updatetask`;
-    const DELETE_TASK = `${BASE}/deletetask`;
-
-  // const fetchTasks = async () => {
-  //   try {
-  //     const res = await axios.get(`${GET_TASKS}`, {
-  //      withCredentials: true
-  //     });
-  //     setTasks(res.data.tasks);
-  //     setUser(res.data.user);
-  //   } catch (err) { console.log(err) }
-  // };
-
+  const cfg = { withCredentials: true }; // ← one config, used everywhere
+  
   const fetchTasks = async () => {
-    const token = localStorage.getItem("token"); 
-      try {
-        const res = await axios.get(GET_TASKS, {
-          // withCredentials: true
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-
-        });
-
-        const data = res.data;
-
-        setTasks(Array.isArray(data.tasks) ? data.tasks : []);
-        // setUser(data.user || "");
-
-        setUser(
-          typeof data.user === "string"
-            ? data.user
-            : data.user?.name || data.username || "User"
-        );
-
-      } catch (err) {
-        console.log(err);
-        setTasks([]);
-      }
-};
-
-  useEffect(() => { fetchTasks(); }, []);
+    try {
+      const res = await axios.get(`${BASE}/alltasks`, cfg);
+      setTasks(Array.isArray(res.data.tasks) ? res.data.tasks : []);
+      setUser(res.data.user?.name || res.data.user || "User");
+    } catch (err) {
+      if (err.response?.status === 401) window.location.href = "/login";
+      setTasks([]);
+    }
+  };
+ useEffect(() => { fetchTasks(); }, []);
 
   const createTask = async () => {
     if (!title) return alert("Title required");
-    await axios.post(CREATE_TASK, { title, description }, {
-      // withCredentials: true
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axios.post(`${BASE}/createtask`, { title, description }, cfg);
     setTitle(""); setDescription(""); fetchTasks();
   };
 
+
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`${BASE}/updatetask/${id}`, { status }, {
-        // withCredentials: true,
-        headers: {
-        Authorization: `Bearer ${token}`
-      }
-      });
+      await axios.put(`${BASE}/updatetask/${id}`, { status }, cfg);
       fetchTasks();
-    } catch (error) { alert("Update failed") }
+    } catch { alert("Update failed"); }
   };
 
   const deleteTask = async (id) => {
-    await axios.delete(`${BASE}/deletetask/${id}`, {
-      // withCredentials: true
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    await axios.delete(`${BASE}/deletetask/${id}`, cfg);
     fetchTasks();
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
+  const logout = async () => {
+    await axios.post(`${API}/api/auth/logout`, {}, cfg);
     window.location.href = "/login";
   };
-
+  
   return (
     <div className="dashboard-container">
       <nav className="dash-nav">

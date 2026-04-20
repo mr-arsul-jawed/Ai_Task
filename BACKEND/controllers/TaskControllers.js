@@ -11,7 +11,7 @@ export const createTask = async (req, res) => {
         const task = await Task.create({
             title,
             description,
-            user: req.user
+            user: req.user.id
         });
         
         // await task.save();
@@ -32,8 +32,8 @@ export const createTask = async (req, res) => {
 // GET ALL TASKS (only user tasks)
 export const getAllTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({ user: req.user });
-        const user = await User.findById(req.user);
+        const tasks = await Task.find({ user: req.user.id });
+        const user = await User.findById(req.user.id);
         res.json({
             message: "Tasks retrieved",
             tasks,
@@ -79,7 +79,7 @@ export const updateTask = async (req, res) => {
 
         // ✅ Secure update (only user's task)
         const task = await Task.findOneAndUpdate(
-            { _id: req.params.id, user: req.user },
+            { _id: req.params.id, user: req.user.id },
             { status },
             { new: true, runValidators: true }
         );

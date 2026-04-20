@@ -11,19 +11,17 @@ function Dashboard() {
   // console.log("Dashboard token:", token);
 
   const API = import.meta.env.VITE_API_URL;
+  const cfg = { withCredentials: true };
 
 
   useEffect(() => {
-        axios.get(`${API}/api/tasks/alltasks`, {
-        // withCredentials: true 
-        headers: {
-        Authorization: `Bearer ${token}`
-      }
-      })
-      .then(res => setUser(res.data.user))
-      .catch(err => console.log(err));
-
-    }, [API]);
+    axios.get(`${API}/api/tasks/alltasks`, cfg)
+      .then(res => setUser(res.data.user?.name || res.data.user || ""))
+      .catch(err => {
+        if (err.response?.status === 401) window.location.href = "/login";
+        console.log(err);
+      });
+  }, [API]);
 
 
     const openApp = (app) => {
@@ -34,11 +32,18 @@ function Dashboard() {
  
 
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("activeApp"); // 👈 ADD THIS
+  // const logout = () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("activeApp"); // 👈 ADD THIS
+  //   window.location.href = "/login";
+  // };
+
+  const logout = async () => {
+    await axios.post(`${API}/api/users/logout`, {}, cfg);
+    localStorage.removeItem("activeApp");
     window.location.href = "/login";
   };
+
 
   return (
     <div className="dashboard-container">

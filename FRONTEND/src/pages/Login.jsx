@@ -20,7 +20,7 @@ function Login() {
       },{withCredentials: true});
        
       alert("Login Successful");
-      localStorage.setItem("token", res.data.token);
+     localStorage.setItem("user", JSON.stringify(res.data.user));
       navigation("/dashboard");
     } catch (err) {
       let message = "An error occurred. Please try again.";
