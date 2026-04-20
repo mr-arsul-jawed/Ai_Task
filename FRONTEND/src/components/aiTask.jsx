@@ -29,9 +29,14 @@ function AiTask() {
   // };
 
   const fetchTasks = async () => {
+    const token = localStorage.getItem("token"); 
       try {
         const res = await axios.get(GET_TASKS, {
-          withCredentials: true
+          // withCredentials: true
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+
         });
 
         const data = res.data;
