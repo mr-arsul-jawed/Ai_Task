@@ -5,7 +5,7 @@ import "../css/dashboard.css"; // Ensure path is correct
 
 function Dashboard() {
   const [user, setUser] = useState("");
-  const [activeApp, setActiveApp] = useState(null);
+  const [activeApp, setActiveApp] = useState(localStorage.getItem("activeApp") || null);
 
   const token = localStorage.getItem("token");
   // console.log("Dashboard token:", token);
@@ -14,14 +14,13 @@ function Dashboard() {
 
 
   useEffect(() => {
-     if (!token) return;
         axios.get(`${API}/api/tasks/alltasks`, {
-        headers: { Authorization: `Bearer ${token}` }
+        withCredentials: true 
       })
       .then(res => setUser(res.data.user))
       .catch(err => console.log(err));
 
-    }, [API, token]);
+    }, [API]);
 
 
     const openApp = (app) => {
@@ -29,9 +28,12 @@ function Dashboard() {
       localStorage.setItem("activeApp", app);
     };
 
+ 
+
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("activeApp"); // 👈 ADD THIS
     window.location.href = "/login";
   };
 
@@ -49,13 +51,13 @@ function Dashboard() {
       {/* APP SELECTOR */}
       {!activeApp && (
         <div className="app-grid">
-          <button className="app-card" onClick={() => setActiveApp("ai-task")}>
-            AI Task Manager
-          </button>
-
-          {/* <button className="app-card" onClick={() => openApp("ai-task")}>
+          {/* <button className="app-card" onClick={() => setActiveApp("ai-task")}>
             AI Task Manager
           </button> */}
+
+          <button className="app-card" onClick={() => openApp("ai-task")}>
+            AI Task Manager
+          </button>
 
           <button className="app-card" disabled>
             Chat App (Coming Soon)
