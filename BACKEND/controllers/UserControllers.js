@@ -209,7 +209,7 @@ export const forgotPassword = async (req, res) => {
             ? process.env.WEB_CLIENT_URL
             : "http://localhost:3000";
 
-        const resetUrl = `${FRONTEND_URL}/reset-password/${resetToken}`;
+        const resetUrl = `${FRONTEND_URL}/api/users/reset-password/${resetToken}`;
 
         // 4. Send email
         const transporter = nodemailer.createTransport({

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import "../css/forgotPass.css"
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -22,18 +23,17 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div>
-            <h2>Forgot Password</h2>
-
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Enter email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <button type="submit">Send Reset Link</button>
-            </form>
-        </div>
+        <div className="forgot-password-container"> {/* Unique wrapper */}
+        <h2>Forgot Password</h2>
+        <form onSubmit={handleSubmit} className="forgot-password-form">
+            <input
+                type="email"
+                placeholder="Enter email"
+                required // Added for basic validation
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <button type="submit">Send Reset Link</button>
+        </form>
+    </div>
     );
 }

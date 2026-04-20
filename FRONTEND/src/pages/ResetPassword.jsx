@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import "../css/resetPass.css"
 
 export default function ResetPassword() {
     const { token } = useParams();
@@ -25,18 +26,19 @@ export default function ResetPassword() {
     };
 
     return (
-        <div>
-            <h2>Reset Password</h2>
+        <div className="reset-password-container"> {/* Unique wrapper */}
+        <h2>Reset Password</h2>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="password"
-                    placeholder="New Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+        <form onSubmit={handleSubmit} className="reset-password-form">
+            <input
+                type="password"
+                placeholder="New Password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+            />
 
-                <button type="submit">Reset Password</button>
-            </form>
-        </div>
+            <button type="submit">Reset Password</button>
+        </form>
+    </div>
     );
 }

@@ -58,15 +58,20 @@ function Login() {
           Login
         </button>
 
-        <Link to="/forgot-password">
-            Forgot Password?
-        </Link>
+        
+       
 
         {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
+
+        
 
         <p>
           Don't have an account? <a href="/signup">Sign up</a>
         </p>
+
+         <Link to="/forgot-password">
+            Forgot Password?
+        </Link>
       </div>
     </div>
   );

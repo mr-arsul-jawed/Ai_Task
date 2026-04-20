@@ -79,3 +79,17 @@
 .btn-login-submit:hover {
     background: #4338ca;
 }
+
+a {
+  text-decoration: none;
+  color: #6366f1; /* Modern Indigo */
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
