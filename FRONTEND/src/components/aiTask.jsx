@@ -56,7 +56,7 @@ function AiTask() {
   const createTask = async () => {
     if (!title) return alert("Title required");
     await axios.post(CREATE_TASK, { title, description }, {
-      withCredentials: true
+      // withCredentials: true
     });
     setTitle(""); setDescription(""); fetchTasks();
   };
@@ -64,7 +64,7 @@ function AiTask() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(`${BASE}/updatetask/${id}`, { status }, {
-        withCredentials: true
+        // withCredentials: true
       });
       fetchTasks();
     } catch (error) { alert("Update failed") }
@@ -72,7 +72,7 @@ function AiTask() {
 
   const deleteTask = async (id) => {
     await axios.delete(`${BASE}/deletetask/${id}`, {
-      withCredentials: true
+      // withCredentials: true
     });
     fetchTasks();
   };
