@@ -13,7 +13,7 @@ export default function ResetPassword() {
 
         try {
             const res = await axios.put(
-                `${API}/api/reset-password/${token}`,
+                `${API}/api/users/reset-password/${token}`,
                 { password }
             );
 

@@ -10,7 +10,7 @@ export default function ForgotPassword() {
         e.preventDefault();
 
         try {
-            const res = await axios.post(`${API}/api/forgot-password`,{
+            const res = await axios.post(`${API}/api/users/forgot-password`,{
                 email
             });
 
