@@ -16,6 +16,9 @@ function Dashboard() {
   useEffect(() => {
         axios.get(`${API}/api/tasks/alltasks`, {
         // withCredentials: true 
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
       })
       .then(res => setUser(res.data.user))
       .catch(err => console.log(err));

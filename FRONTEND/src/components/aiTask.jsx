@@ -18,38 +18,38 @@ function AiTask() {
     const UPDATE_TASK = `${BASE}/updatetask`;
     const DELETE_TASK = `${BASE}/deletetask`;
 
+  // const fetchTasks = async () => {
+  //   try {
+  //     const res = await axios.get(`${GET_TASKS}`, {
+  //      withCredentials: true
+  //     });
+  //     setTasks(res.data.tasks);
+  //     setUser(res.data.user);
+  //   } catch (err) { console.log(err) }
+  // };
+
   const fetchTasks = async () => {
-    try {
-      const res = await axios.get(`${GET_TASKS}`, {
-       withCredentials: true
-      });
-      setTasks(res.data.tasks);
-      setUser(res.data.user);
-    } catch (err) { console.log(err) }
-  };
+      try {
+        const res = await axios.get(GET_TASKS, {
+          withCredentials: true
+        });
 
-//   const fetchTasks = async () => {
-//       try {
-//         const res = await axios.get(GET_TASKS, {
-//           headers: { Authorization: `Bearer ${token}` }
-//         });
+        const data = res.data;
 
-//         const data = res.data;
+        setTasks(Array.isArray(data.tasks) ? data.tasks : []);
+        // setUser(data.user || "");
 
-//         setTasks(Array.isArray(data.tasks) ? data.tasks : []);
-//         // setUser(data.user || "");
+        setUser(
+          typeof data.user === "string"
+            ? data.user
+            : data.user?.name || data.username || "User"
+        );
 
-//         setUser(
-//           typeof data.user === "string"
-//             ? data.user
-//             : data.user?.name || data.username || "User"
-//         );
-
-//       } catch (err) {
-//         console.log(err);
-//         setTasks([]);
-//       }
-// };
+      } catch (err) {
+        console.log(err);
+        setTasks([]);
+      }
+};
 
   useEffect(() => { fetchTasks(); }, []);
 
@@ -57,6 +57,9 @@ function AiTask() {
     if (!title) return alert("Title required");
     await axios.post(CREATE_TASK, { title, description }, {
       // withCredentials: true
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
     setTitle(""); setDescription(""); fetchTasks();
   };
@@ -64,7 +67,10 @@ function AiTask() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(`${BASE}/updatetask/${id}`, { status }, {
-        // withCredentials: true
+        // withCredentials: true,
+        headers: {
+        Authorization: `Bearer ${token}`
+      }
       });
       fetchTasks();
     } catch (error) { alert("Update failed") }
@@ -73,6 +79,9 @@ function AiTask() {
   const deleteTask = async (id) => {
     await axios.delete(`${BASE}/deletetask/${id}`, {
       // withCredentials: true
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
     fetchTasks();
   };
