@@ -2,6 +2,8 @@ import User from "../model/UserModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 
 
@@ -162,6 +164,115 @@ export const logout = async (req, res) => {
         // 🔹 Response
         res.status(200).json({
             message: "Logout successful"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        });
+    }
+};
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        // 1. Create reset token
+        const resetToken = crypto.randomBytes(32).toString("hex");
+
+        // 2. Hash token and store in DB
+        user.resetPasswordToken = crypto
+            .createHash("sha256")
+            .update(resetToken)
+            .digest("hex");
+
+        user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 min
+
+        await user.save();
+
+        // 3. Reset URL (frontend link)
+        // const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+
+
+        // In production, we should use the actual frontend URL from environment variables
+
+        const FRONTEND_URL =
+        process.env.NODE_ENV === "production"
+            ? process.env.WEB_CLIENT_URL
+            : "http://localhost:3000";
+
+        const resetUrl = `${FRONTEND_URL}/reset-password/${resetToken}`;
+
+        // 4. Send email
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        await transporter.sendMail({
+            to: user.email,
+            subject: "Password Reset Request",
+            html: `
+                <h2>Reset Password</h2>
+                <p>Click below link to reset password:</p>
+                <a href="${resetUrl}">${resetUrl}</a>
+            `
+        });
+
+        res.json({
+            message: "Reset link sent to email"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { password } = req.body;
+
+        const hashedToken = crypto
+            .createHash("sha256")
+            .update(token)
+            .digest("hex");
+
+        const user = await User.findOne({
+            resetPasswordToken: hashedToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid or expired token"
+            });
+        }
+
+        // update password
+        user.password = await bcrypt.hash(password, 10);
+
+        // clear reset fields
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.json({
+            message: "Password reset successful"
         });
 
     } catch (error) {

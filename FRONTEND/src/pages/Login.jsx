@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import "../css/login.css"; // Make sure the path is correct
 
 function Login() {
@@ -18,7 +18,8 @@ function Login() {
         email,
         password,
       },{withCredentials: true});
-
+       
+      alert("Login Successful");
       localStorage.setItem("token", res.data.token);
       navigation("/dashboard");
     } catch (err) {
@@ -56,6 +57,10 @@ function Login() {
         <button className="btn-login-submit" onClick={handleLogin}>
           Login
         </button>
+
+        <Link to="/forgot-password">
+            Forgot Password?
+        </Link>
 
         {errorMsg && <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>}
 
