@@ -6,23 +6,27 @@ import userRoutes from "./router/UserRoute.js";
 import taskRoutes from "./router/TaskRoute.js";
 import cookieParser from "cookie-parser";
 
-dotenv.config();
+dotenv.config({
+
+});
 
 const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.WEB_CLIENT_URL
-].filter(Boolean);
+].map(origin => origin?.replace(/\/$/, "")); // 🔥 remove trailing slash
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (Postman, mobile apps)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    const cleanOrigin = origin.replace(/\/$/, "");
+
+    if (allowedOrigins.includes(cleanOrigin)) {
       return callback(null, true);
     } else {
+      console.log("Blocked by CORS:", origin); // 🔍 debug
       return callback(new Error("Not allowed by CORS"));
     }
   },
