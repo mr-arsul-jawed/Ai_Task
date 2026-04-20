@@ -209,7 +209,7 @@ export const forgotPassword = async (req, res) => {
             ? process.env.WEB_CLIENT_URL
             : "http://localhost:3000";
 
-        const resetUrl = `${FRONTEND_URL}/api/users/reset-password/${resetToken}`;
+        const resetUrl = `${FRONTEND_URL}/reset-password/${resetToken}`;
 
         // 4. Send email
         const transporter = nodemailer.createTransport({
@@ -224,10 +224,117 @@ export const forgotPassword = async (req, res) => {
             to: user.email,
             subject: "Password Reset Request",
             html: `
-                <h2>Reset Password</h2>
-                <p>Click below link to reset password:</p>
-                <a href="${resetUrl}">${resetUrl}</a>
-            `
+                <div style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, sans-serif;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8; padding:20px 0;">
+                    <tr>
+                    <td align="center">
+
+                        <table width="500" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:10px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,0.08);">
+
+                        <!-- HEADER -->
+                        <tr>
+                            <td align="center">
+                            <h2 style="margin:0; color:#222;">AI Task App</h2>
+                            <p style="margin:5px 0 20px; color:#888; font-size:13px;">
+                                Secure Account Services
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- TITLE -->
+                        <tr>
+                            <td>
+                            <h3 style="color:#333; text-align:center; margin-bottom:10px;">
+                                Reset Your Password
+                            </h3>
+                            </td>
+                        </tr>
+
+                        <!-- MESSAGE -->
+                        <tr>
+                            <td>
+                            <p style="color:#555; font-size:14px;">
+                                Hi ${user.name || "User"},
+                            </p>
+
+                            <p style="color:#555; font-size:14px;">
+                                We received a request to reset your password for your AI Task App account.
+                            </p>
+
+                            <p style="color:#555; font-size:14px;">
+                                Click the button below to set a new password. This link is valid for <strong>15 minutes</strong>.
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- BUTTON -->
+                        <tr>
+                            <td align="center" style="padding:25px 0;">
+                            <a href="${resetUrl}"
+                                style="
+                                background-color:#4CAF50;
+                                color:#ffffff;
+                                padding:12px 24px;
+                                text-decoration:none;
+                                border-radius:6px;
+                                font-size:16px;
+                                font-weight:bold;
+                                display:inline-block;
+                                ">
+                                Reset Password
+                            </a>
+                            </td>
+                        </tr>
+
+                        <!-- FALLBACK LINK -->
+                        <tr>
+                            <td>
+                            <p style="font-size:12px; color:#666; word-break:break-all;">
+                                If the button doesn’t work, copy and paste this link into your browser:
+                                <br/>
+                                <a href="${resetUrl}" style="color:#4CAF50;">${resetUrl}</a>
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- SECURITY NOTE -->
+                        <tr>
+                            <td>
+                            <p style="color:#999; font-size:12px;">
+                                ⚠️ If you did not request a password reset, please ignore this email. Your account remains secure.
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- SUPPORT -->
+                        <tr>
+                            <td>
+                            <p style="color:#999; font-size:12px;">
+                                Need help? Contact our support team:
+                                <a href="arsh49760@gmail.com" style="color:#4CAF50;">
+                                support@aitaskapp.com
+                                </a>
+                            </p>
+                            </td>
+                        </tr>
+
+                        <!-- FOOTER -->
+                        <tr>
+                            <td>
+                            <hr style="margin:20px 0; border:none; border-top:1px solid #eee;" />
+                            <p style="color:#aaa; font-size:11px; text-align:center;">
+                                © ${new Date().getFullYear()} AI Task App. All rights reserved.
+                            </p>
+                            </td>
+                        </tr>
+
+                        </table>
+
+                    </td>
+                    </tr>
+                </table>
+                </div>
+                `
         });
 
         res.json({
